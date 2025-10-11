@@ -36,16 +36,16 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 ## 🗂️ Project Structure
 
 landing-page-website/
-├── src/
-│ ├── app/
-│ │ └── page.tsx # Main landing page
-│ └── styles/ # Global styles
-├── public/ # Static assets (icons, images)
-├── package.json # Dependencies and scripts
-├── tailwind.config.js # Tailwind configuration
-├── postcss.config.js # PostCSS configuration
-├── tsconfig.json # TypeScript configuration
-└── README.md # Project documentation
+├─ src/
+│  ├─ app/
+│  │  └─ page.tsx               # Main landing page
+│  └─ styles/                   # Global styles
+├─ public/                      # Static assets (icons, images)
+├─ package.json                 # Dependencies and scripts
+├─ tailwind.config.js           # Tailwind configuration
+├─ postcss.config.js            # PostCSS configuration
+├─ tsconfig.json                # TypeScript configuration
+└─ README.md                    # Project documentation
 
 ---
 
