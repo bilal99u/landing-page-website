@@ -1,15 +1,29 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail } from 'lucide-react';
-import { useEffect } from 'react';
 
 export default function Portfolio() {
+  const [active, setActive] = useState('');
+
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
   }, []);
-  
-  // ... rest of your code
+
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[id]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { threshold: 0.3 }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -18,23 +32,40 @@ export default function Portfolio() {
         <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
           <h1 className="text-lg font-semibold">Ahmad Bilal Irfan</h1>
           <div className="space-x-6 text-sm font-medium">
-            <a href="#about" className="hover:text-blue-600 transition-colors">About</a>
-            <a href="#projects" className="hover:text-blue-600 transition-colors">Projects</a>
-            <a href="#links" className="hover:text-blue-600 transition-colors">Links</a>
-            <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
+            <a href="#about" className={active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>About</a>
+            <a href="#projects" className={active === 'projects' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Projects</a>
+            <a href="#links" className={active === 'links' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Links</a>
+            <a href="#contact" className={active === 'contact' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Contact</a>
           </div>
         </div>
         <div className="h-0.5 bg-blue-100 w-full"></div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="flex flex-col justify-center items-center h-screen text-center px-6">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-3xl md:text-5xl font-bold mb-4">
-          FPGA / ASIC & Embedded Systems Engineer
-        </motion.h2>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.6 }} className="max-w-2xl text-gray-600">
-          AI | Real-Time Systems | RISC-V | Verilog RTL | MEng ECE @ University of Waterloo
-        </motion.p>
+      {/* Hero Section with Background Image */}
+      <section className="relative flex flex-col justify-center items-center h-screen text-center px-6 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: "url('https://www.kendrion.com/fileadmin/_processed_/1/c/csm_FPGA-Design-Header_ae3d7b8f1a.jpg')" }}
+        ></div>
+
+        <div className="relative z-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text"
+          >
+            FPGA / ASIC & Embedded Systems Engineer
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="max-w-2xl text-gray-700 font-medium"
+          >
+            AI | Real-Time Systems | RISC-V | Verilog RTL | MEng ECE @ University of Waterloo
+          </motion.p>
+        </div>
       </section>
 
       {/* About Section */}
@@ -64,7 +95,12 @@ export default function Portfolio() {
                 desc: 'Contributed to RTL design and FPGA validation for solar inverter systems, improving tracking accuracy by 82%.'
               }
             ].map((p) => (
-              <motion.div key={p.title} whileHover={{ scale: 1.03 }} className="p-6 border border-gray-200 rounded-xl shadow-sm bg-gray-50 transition-transform">
+              <motion.div
+                key={p.title}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: 'spring', stiffness: 150 }}
+                className="p-6 border border-gray-200 rounded-xl shadow-md hover:shadow-lg bg-gray-50 transition-transform"
+              >
                 <h4 className="text-lg font-semibold mb-2">{p.title}</h4>
                 <p className="text-sm text-gray-600">{p.desc}</p>
               </motion.div>
@@ -88,7 +124,14 @@ export default function Portfolio() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h3 className="text-2xl font-semibold mb-4">Contact</h3>
           <p className="text-gray-600 mb-6">Interested in collaborating or discussing hardware design, AI, or embedded systems? Feel free to reach out.</p>
-          <a href="mailto:abirfan@uwaterloo.ca" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Get in Touch</a>
+          <motion.a
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            href="mailto:abirfan@uwaterloo.ca"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Get in Touch
+          </motion.a>
         </div>
       </section>
 
