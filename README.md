@@ -35,3 +35,34 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 
 ## 🗂️ Project Structure
 
+landing-page-website/
+├── src/
+│ ├── app/
+│ │ └── page.tsx # Main landing page
+│ └── styles/ # Global styles
+├── public/ # Static assets (icons, images)
+├── package.json # Dependencies and scripts
+├── tailwind.config.js # Tailwind configuration
+├── postcss.config.js # PostCSS configuration
+├── tsconfig.json # TypeScript configuration
+└── README.md # Project documentation
+
+---
+
+## 🧩 Local Development Setup
+
+Run the following commands in your terminal:
+
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/bilal99u/landing-page-website.git
+cd landing-page-website
+
+# 2️⃣ Install dependencies
+npm install
+
+# 3️⃣ Start local dev server
+npm run dev
+
+# 4️⃣ Open in browser
+http://localhost:3000
