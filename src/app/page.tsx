@@ -58,7 +58,7 @@ export default function Portfolio() {
   {/* Content */}
   <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
     {/* Text with Darker Styling */}
-    <div className="max-w-xl bg-black/40 p-6 rounded-2xl backdrop-blur-sm">
+    <div className="max-w-xl bg-black/60 p-6 rounded-2xl backdrop-blur-sm">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -71,7 +71,7 @@ export default function Portfolio() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.6 }}
-        className="max-w-2xl text-gray-100 font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
+        className="max-w-2xl text-gray-50 font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
       >
         AI | Real-Time Systems | RISC-V | Verilog RTL | MEng ECE @ University of Waterloo
       </motion.p>
