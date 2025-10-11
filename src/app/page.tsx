@@ -41,50 +41,48 @@ export default function Portfolio() {
         <div className="h-0.5 bg-blue-100 w-full"></div>
       </nav>
 
-{/* Hero Section with Profile Image and Gradient Overlay */}
+{/* Hero Section with High Contrast Text */}
 <section className="relative flex flex-col md:flex-row justify-center items-center h-screen text-center md:text-left px-6 md:px-16 overflow-hidden">
   {/* Background */}
   <div
-    className="absolute inset-0 bg-cover bg-center opacity-40"
+    className="absolute inset-0 bg-cover bg-center opacity-50"
     style={{
       backgroundImage:
         "url('https://cdn.builtin.com/sites/www.builtin.com/files/2024-04/FPGA%201200x635.jpg')",
     }}
   ></div>
 
-  {/* Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60"></div>
+  {/* Darker Gradient Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"></div>
 
-  {/* Content Wrapper */}
+  {/* Content */}
   <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
-    {/* Left: Text */}
-    <div className="max-w-xl">
+    {/* Text with Darker Styling */}
+    <div className="max-w-xl bg-black/40 p-6 rounded-2xl backdrop-blur-sm">
       <motion.h2
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6 }}
-  className="text-3xl md:text-5xl font-bold mb-4 text-gray-100 md:text-gray-50 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
->
-  FPGA / ASIC & Embedded Systems Engineer
-</motion.h2>
-
-<motion.p
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ delay: 0.2, duration: 0.6 }}
-  className="max-w-2xl text-gray-200 md:text-gray-100 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]"
->
-  AI | Real-Time Systems | RISC-V | Verilog RTL | MEng ECE @ University of Waterloo
-</motion.p>
-
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-3xl md:text-5xl font-bold mb-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
+      >
+        FPGA / ASIC & Embedded Systems Engineer
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="max-w-2xl text-gray-100 font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
+      >
+        AI | Real-Time Systems | RISC-V | Verilog RTL | MEng ECE @ University of Waterloo
+      </motion.p>
     </div>
 
-    {/* Right: Profile Photo */}
+    {/* Profile Photo */}
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.3, duration: 0.6 }}
-      className="rounded-full border-4 border-white shadow-lg overflow-hidden w-40 h-40 md:w-56 md:h-56 flex-shrink-0"
+      className="rounded-full border-4 border-white shadow-xl overflow-hidden w-40 h-40 md:w-56 md:h-56 flex-shrink-0"
     >
       <img
         src="/CV.jpg"
@@ -94,6 +92,7 @@ export default function Portfolio() {
     </motion.div>
   </div>
 </section>
+
 
 
       {/* About Section */}
