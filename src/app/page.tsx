@@ -1,0 +1,98 @@
+"use client";
+
+import { motion } from 'framer-motion';
+import { Github, Linkedin, Mail } from 'lucide-react';
+import { useEffect } from 'react';
+
+export default function Portfolio() {
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }, []);
+  
+  // ... rest of your code
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-white shadow-sm z-50">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+          <h1 className="text-lg font-semibold">Ahmad Bilal Irfan</h1>
+          <div className="space-x-6 text-sm font-medium">
+            <a href="#about" className="hover:text-blue-600 transition-colors">About</a>
+            <a href="#projects" className="hover:text-blue-600 transition-colors">Projects</a>
+            <a href="#links" className="hover:text-blue-600 transition-colors">Links</a>
+            <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
+          </div>
+        </div>
+        <div className="h-0.5 bg-blue-100 w-full"></div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="flex flex-col justify-center items-center h-screen text-center px-6">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-3xl md:text-5xl font-bold mb-4">
+          FPGA / ASIC & Embedded Systems Engineer
+        </motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.6 }} className="max-w-2xl text-gray-600">
+          AI | Real-Time Systems | RISC-V | Verilog RTL | MEng ECE @ University of Waterloo
+        </motion.p>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="max-w-4xl mx-auto px-4 py-24 scroll-mt-24">
+        <h3 className="text-2xl font-semibold mb-4">About</h3>
+        <p className="text-gray-700 leading-relaxed">
+          I’m a Master of Engineering candidate in Electrical and Computer Engineering at the University of Waterloo, specializing in digital systems, FPGA/ASIC design, and embedded hardware. My focus is on building efficient, reliable hardware systems that bridge the gap between high-level design and real-world implementation.
+        </p>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="bg-white py-24 scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-4">
+          <h3 className="text-2xl font-semibold mb-8">Projects</h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Cycle-Accurate 5-Stage Pipelined RISC-V Processor',
+                desc: 'Designed a 5-stage RISC-V RV32I processor with data-forwarding, hazard detection, and branch prediction, verified with testbenches and FPGA prototyping.'
+              },
+              {
+                title: 'Verilog RTL CAN-Bus Receiver/Decoder',
+                desc: 'Developed a CAN-Bus receiver with dynamic bit-rate and frame-length detection, verified through simulation and FPGA testing.'
+              },
+              {
+                title: 'IC Design Internship – Solar-Tracking Control System',
+                desc: 'Contributed to RTL design and FPGA validation for solar inverter systems, improving tracking accuracy by 82%.'
+              }
+            ].map((p) => (
+              <motion.div key={p.title} whileHover={{ scale: 1.03 }} className="p-6 border border-gray-200 rounded-xl shadow-sm bg-gray-50 transition-transform">
+                <h4 className="text-lg font-semibold mb-2">{p.title}</h4>
+                <p className="text-sm text-gray-600">{p.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Links Section */}
+      <section id="links" className="max-w-4xl mx-auto px-4 py-24 text-center scroll-mt-24">
+        <h3 className="text-2xl font-semibold mb-8">Links</h3>
+        <div className="flex justify-center space-x-8">
+          <a href="https://github.com/bilal99u" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Github size={28} /></a>
+          <a href="https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Linkedin size={28} /></a>
+          <a href="mailto:abirfan@uwaterloo.ca" className="text-gray-700 hover:text-blue-600 transition-colors"><Mail size={28} /></a>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="bg-gray-100 py-24 scroll-mt-24">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h3 className="text-2xl font-semibold mb-4">Contact</h3>
+          <p className="text-gray-600 mb-6">Interested in collaborating or discussing hardware design, AI, or embedded systems? Feel free to reach out.</p>
+          <a href="mailto:abirfan@uwaterloo.ca" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Get in Touch</a>
+        </div>
+      </section>
+
+      <footer className="text-center text-gray-500 text-sm py-6 border-t">© {new Date().getFullYear()} Ahmad Bilal Irfan</footer>
+    </div>
+  );
+}
