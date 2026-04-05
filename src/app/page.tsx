@@ -1,645 +1,387 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, ChevronDown } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Github, Linkedin, Mail, X } from 'lucide-react';
 
-const SKILLS = [
+type Project = {
+  title: string;
+  desc: string;
+  details: string;
+  tags?: string[];
+  link?: string;
+};
+
+const HW_PROJECTS: Project[] = [
   {
-    category: "HDL / Verification",
-    items:
-      "SystemVerilog (OOP, UVM, SVA), Verilog, VHDL — RTL design, constrained-random verification, functional coverage, CDC analysis",
+    title: 'Cycle-Accurate 5-Stage Pipelined RISC-V Processor',
+    desc: 'RV32I pipeline in SystemVerilog with data forwarding, hazard detection, branch prediction, and SVA assertion-based verification.',
+    details: `RTL implementation of a full RV32I 5-stage pipeline (IF, ID, EX, MEM, WB) in SystemVerilog. Features data forwarding paths, hazard detection unit, and static branch prediction. Verified against the RISC-V compliance suite using a self-checking testbench with SVA assertion-based checking and constrained-random instruction stimulus. Models a simplified AI/ML inference accelerator control path.`,
+    tags: ['SystemVerilog', 'SVA', 'CRV', 'FPGA'],
+    link: 'https://github.com/bilal99u/RISC-V-Verilog-Implementation-',
   },
   {
-    category: "Programming",
-    items: "C/C++, Python (ML / automation), TCL, MATLAB, ARM/MIPS assembly",
+    title: '2048-bit High-Performance Adder – Intel Agilex 5 FPGA',
+    desc: 'Kogge-Stone parallel prefix adder achieving 825 MHz and 37% speed improvement; register retiming cut latency from 230 to 11 cycles.',
+    details: `Designed a 2048-bit Kogge-Stone parallel prefix adder in Verilog targeting the Intel Agilex 5 FPGA. Achieved 825 MHz after register retiming, reducing latency from 230 to 11 cycles (37% speed improvement). Swept FPGA architectural parameters across configurations and automated QoR extraction in Python, achieving 41% better MHz/ALM efficiency over a ripple-carry baseline. Critical arithmetic block for AI silicon and DSP datapaths.`,
+    tags: ['Verilog', 'Intel Quartus', 'Python', 'DSP'],
   },
   {
-    category: "EDA / Tools",
-    items:
-      "ModelSim / QuestaSim, Verilator, Xilinx Vivado (ILA/ChipScope), Intel Quartus, VTR, Git, Linux",
+    title: 'Coverage-Driven CAN-Bus Fault Injection & Verification Framework',
+    desc: 'Hybrid C++/Python (pybind11) framework for protocol-level fault injection into an RTL CAN-Bus model with UVM-style CRV methodology.',
+    details: `Built a hybrid C++/Python verification framework using pybind11 for protocol-level fault injection into an RTL CAN-Bus model. Automated fail-log collection and root-cause clustering aligned with UVM-style constrained-random verification methodology. Implemented functional coverage bins targeting error frames, bit-stuffing violations, and arbitration edge cases to drive testbench completeness.`,
+    tags: ['C++', 'Python', 'pybind11', 'UVM-style', 'CAN-Bus'],
   },
   {
-    category: "Protocols & HW",
-    items:
-      "CAN-Bus, AXI4/AXI-Lite, SPI, I2C, UART; FPGA prototyping, logic analyzers, oscilloscopes",
+    title: 'FPGA Architecture Exploration: 1D Systolic DSP Arrays',
+    desc: 'Benchmarked systolic cascade vs. routing-fabric across 72 VTR configurations -- 91% frequency improvement, 47% wirelength reduction.',
+    details: `Benchmarked systolic cascade vs. routing-fabric FPGA architectures across 72 VTR configurations, demonstrating 91% frequency improvement and 47% wirelength reduction for convolution/DSP workloads. Automated architecture generation and QoR extraction via Python across all test configurations. Analysis directly informs AI silicon and signal-processing FPGA design trade-offs.`,
+    tags: ['VTR', 'Python', 'DSP', 'Architecture'],
+  },
+  {
+    title: 'Verilog RTL CAN-Bus Receiver/Decoder',
+    desc: 'CAN-Bus receiver with dynamic bit-rate and frame-length detection, verified on FPGA with simulation and hardware timing analysis.',
+    details: `Designed a CAN-Bus receiver/decoder in Verilog RTL with dynamic bit-rate and frame-length detection. Implemented hardware-level ID-match trigger logic for autonomous CAN message filtering. Developed comprehensive simulation testbenches validating edge-case protocol behavior, then validated functional correctness on-board via directed and pseudo-random simulation followed by hardware timing analysis.`,
+    tags: ['Verilog', 'FPGA', 'CAN-Bus'],
+    link: 'https://github.com/bilal99u/landing-page-website',
+  },
+  {
+    title: 'ASIC for Control Flow of Hashing Algorithm',
+    desc: 'Digital ASIC control module implementing control flow for a custom hashing algorithm, focusing on low-latency FSM logic.',
+    details: `Designed and verified a digital ASIC control module implementing the control flow for a custom hashing algorithm. Emphasizes low-latency finite-state machine (FSM) logic with clean state encoding and minimal critical path delay. Verified using directed testbenches in ModelSim with functional simulation prior to synthesis.`,
+    tags: ['ASIC', 'FSM', 'ModelSim', 'RTL'],
+  },
+  {
+    title: 'RISC-V Instruction Memory & Program Counter',
+    desc: 'Memory-mapped instruction module and PC logic in Verilog, integrated with RISC-V pipeline stages.',
+    details: `Developed a memory-mapped instruction memory module and program counter logic in Verilog. Designed to integrate cleanly with RISC-V pipeline stages, supporting sequential and branch-target addressing. Verified via simulation with directed test programs.`,
+    tags: ['Verilog', 'RISC-V'],
+    link: 'https://github.com/bilal99u/RISC-V-instruction-memory-and-program-counter-implementation-',
+  },
+  {
+    title: '8051 MCU-Based Home Security System',
+    desc: 'Microcontroller-based home alarm system with motion sensors, buzzer alerts, and password-protected keypad control.',
+    details: `Developed an 8051 microcontroller-based home security system in embedded C. Features PIR motion sensor integration, active buzzer alert triggering, and a 4x4 keypad with password-protected arming/disarming logic. LCD display provides real-time system status feedback.`,
+    tags: ['8051', 'Embedded C', 'MCU'],
+  },
+  {
+    title: 'Rate Monotonic Scheduler',
+    desc: 'Real-time scheduling algorithm in Python simulating CPU task scheduling with schedulability analysis.',
+    details: `Implemented a Rate Monotonic Scheduling (RMS) algorithm in Python. Performs schedulability analysis using the Liu and Layland utilization bound, simulates CPU task execution on a timeline, and visualizes Gantt charts for task sets. Useful for validating real-time system designs before hardware implementation.`,
+    tags: ['Python', 'RTOS', 'Scheduling'],
+    link: 'https://github.com/bilal99u/Rate_Monotonic_Scheduler',
   },
 ];
 
-const EXPERIENCE = [
+const ML_PROJECTS: Project[] = [
   {
-    role: "Research Assistant – RTL Design & Verification",
-    org: "Safety-Critical Real-Time Systems Lab, University of Waterloo",
-    location: "Waterloo, Canada",
-    period: "May 2025 – Dec 2025",
-    bullets: [
-      "Designed and verified a Verilog RTL CAN-Bus receiver/decoder on FPGA with dynamic bit-rate and frame-length detection; developed comprehensive simulation testbenches validating edge-case protocol behavior.",
-      "Implemented hardware-level ID-match trigger logic for autonomous CAN message filtering; validated functional correctness via directed and pseudo-random simulation followed by on-board hardware testing.",
-    ],
+    title: 'CNN LeNet',
+    desc: 'Convolutional neural network (LeNet) for image classification tasks in PyTorch.',
+    details: `Implemented the classic LeNet-5 convolutional neural network architecture from scratch in PyTorch. Trained and evaluated on standard image classification benchmarks, with experiments on learning rate schedules and batch normalization variants.`,
+    tags: ['PyTorch', 'CNN'],
+    link: 'https://github.com/bilal99u/CNN_LeNET',
   },
   {
-    role: "ASIC Design & Verification Engineer (Intern)",
-    org: "IC Design Lab, National Institute of Electronics",
-    location: "Islamabad, Pakistan",
-    period: "June 2020 – Oct 2020",
-    bullets: [
-      "Developed Verilog RTL blocks and wrote directed testbenches; performed functional simulation in ModelSim and validated designs on FPGA prototypes prior to tape-out.",
-      "Contributed to design and verification of a custom solar-tracking IC, achieving 82% accuracy improvement through iterative simulation-driven RTL refinement.",
-    ],
-  },
-];
-
-const HW_PROJECTS = [
-  {
-    title: "Cycle-Accurate 5-Stage Pipelined RISC-V Processor",
-    desc: "RV32I SystemVerilog pipeline with data forwarding, hazard detection, and branch prediction; verified against RISC-V compliance suite. Self-checking testbench with SVA assertions and constrained-random instruction stimulus.",
-    link: "https://github.com/bilal99u/RISC-V-Verilog-Implementation-",
-    tags: ["SystemVerilog", "SVA", "CRV", "FPGA"],
+    title: 'Variational Autoencoder - Anime Image Generator',
+    desc: 'VAE model to generate anime-style images using PyTorch and latent variable sampling.',
+    details: `Built a Variational Autoencoder (VAE) in PyTorch trained on an anime faces dataset. Implements the reparameterization trick for backpropagation through stochastic nodes. Explored latent space interpolation and random sampling to generate novel anime-style face images.`,
+    tags: ['PyTorch', 'VAE', 'Generative'],
+    link: 'https://github.com/bilal99u/Variational-Autoencoder-Anime-Image-Generator',
   },
   {
-    title: "2048-bit High-Performance Adder – Intel Agilex 5 FPGA",
-    desc: "Kogge-Stone parallel prefix adder hitting 825 MHz — 37% speed improvement; register retiming cut latency from 230 to 11 cycles. Python-automated QoR sweep achieved 41% better MHz/ALM efficiency over ripple-carry baseline.",
-    link: "#",
-    tags: ["RTL", "Intel Quartus", "Python", "DSP"],
+    title: 'Multi-Armed Bandit ML Project',
+    desc: 'Exploration-exploitation strategies for the multi-armed bandit problem, with comparative visualization.',
+    details: `Implemented and compared multiple exploration-exploitation strategies for the multi-armed bandit problem: epsilon-greedy, UCB1, and Thompson Sampling. Visualized cumulative regret and reward curves across strategies to highlight trade-offs in exploration efficiency.`,
+    tags: ['RL', 'Python'],
+    link: 'https://github.com/bilal99u/Multi_armed_bundit_ML_project',
   },
   {
-    title: "Coverage-Driven CAN-Bus Fault Injection & Verification Framework",
-    desc: "Hybrid C++/Python (pybind11) framework for protocol-level fault injection into an RTL CAN-Bus model. Functional coverage bins + CRV targeting error frames, bit-stuffing violations, and arbitration edge cases.",
-    link: "#",
-    tags: ["C++", "Python", "pybind11", "UVM-style"],
+    title: 'Stroke Prediction',
+    desc: 'KNN, Logistic Regression, and XGBoost models on healthcare data to predict stroke risk.',
+    details: `Trained and compared KNN, Logistic Regression, and XGBoost classifiers on a healthcare stroke dataset. Addressed class imbalance using SMOTE oversampling. Evaluated models using ROC-AUC, precision-recall, and confusion matrix metrics.`,
+    tags: ['XGBoost', 'Sklearn', 'Healthcare'],
+    link: 'https://github.com/bilal99u/Stroke_prediction',
   },
   {
-    title: "FPGA Architecture Exploration: 1D Systolic DSP Arrays",
-    desc: "Benchmarked systolic cascade vs. routing-fabric across 72 VTR configurations — 91% frequency improvement, 47% wirelength reduction for convolution/DSP. Python-automated architecture generation and QoR extraction.",
-    link: "#",
-    tags: ["VTR", "Python", "DSP", "Architecture"],
+    title: 'PCA - Penguins Dataset',
+    desc: 'Principal Component Analysis for dimensionality reduction and species cluster visualization.',
+    details: `Applied PCA to the Palmer Penguins dataset to reduce dimensionality from 4 features to 2 principal components. Visualized species separation in the reduced space, demonstrating clear cluster boundaries and variance explained by each component.`,
+    tags: ['PCA', 'Python', 'Visualization'],
+    link: 'https://github.com/bilal99u/PCA_penguins_dataset',
   },
   {
-    title: "Verilog RTL CAN-Bus Receiver / Decoder",
-    desc: "CAN-Bus receiver with dynamic bit-rate and frame-length detection, verified on FPGA with simulation and hardware timing analysis.",
-    link: "https://github.com/bilal99u/landing-page-website",
-    tags: ["Verilog", "FPGA", "CAN-Bus"],
+    title: 'K-Means Clustering',
+    desc: 'K-Means clustering implemented from scratch in Python with convergence visualization.',
+    details: `Implemented K-Means clustering from scratch in Python without sklearn. Includes centroid initialization (random and k-means++), iterative assignment/update steps, and animated convergence visualization. Compared clustering quality across different k values using the elbow method.`,
+    tags: ['Clustering', 'Python'],
+    link: 'https://github.com/bilal99u/k_means-initial',
   },
   {
-    title: "ASIC for Control Flow of Hashing Algorithm",
-    desc: "Digital ASIC control module implementing control flow for a custom hashing algorithm, focusing on low-latency finite-state logic.",
-    link: "#",
-    tags: ["ASIC", "FSM", "RTL"],
-  },
-  {
-    title: "RISC-V Instruction Memory & Program Counter",
-    desc: "Memory-mapped instruction module and PC logic in Verilog, integrated with RISC-V pipeline stages for simulation and testing.",
-    link: "https://github.com/bilal99u/RISC-V-instruction-memory-and-program-counter-implementation-",
-    tags: ["Verilog", "RISC-V"],
-  },
-  {
-    title: "8051 MCU-Based Home Security System",
-    desc: "8051 microcontroller-based home alarm system with motion sensors, buzzer alerts, and password-protected keypad control.",
-    link: "#",
-    tags: ["8051", "Embedded C", "MCU"],
-  },
-  {
-    title: "Rate Monotonic Scheduler",
-    desc: "Real-time scheduling algorithm in Python to analyze and simulate CPU task scheduling behavior.",
-    link: "https://github.com/bilal99u/Rate_Monotonic_Scheduler",
-    tags: ["Python", "RTOS", "Scheduling"],
+    title: 'Wine Model',
+    desc: 'Classification model for the wine dataset with hyperparameter tuning and performance visualization.',
+    details: `Built and tuned a classification pipeline on the UCI Wine dataset. Compared Decision Tree, Random Forest, and SVM classifiers. Applied grid search cross-validation for hyperparameter optimization and visualized feature importances and decision boundaries.`,
+    tags: ['Classification', 'Python', 'Sklearn'],
+    link: 'https://github.com/bilal99u/wine_model',
   },
 ];
-
-const ML_PROJECTS = [
-  {
-    title: "CNN LeNet",
-    desc: "Convolutional neural network (LeNet) for image classification in PyTorch.",
-    link: "https://github.com/bilal99u/CNN_LeNET",
-    tags: ["PyTorch", "CNN"],
-  },
-  {
-    title: "Variational Autoencoder – Anime Image Generator",
-    desc: "VAE model generating anime-style images using PyTorch and latent variable sampling.",
-    link: "https://github.com/bilal99u/Variational-Autoencoder-Anime-Image-Generator",
-    tags: ["PyTorch", "VAE", "Generative"],
-  },
-  {
-    title: "Multi-Armed Bandit ML Project",
-    desc: "Exploration-exploitation strategies for the multi-armed bandit problem, visualized.",
-    link: "https://github.com/bilal99u/Multi_armed_bundit_ML_project",
-    tags: ["RL", "Python"],
-  },
-  {
-    title: "Stroke Prediction",
-    desc: "KNN, Logistic Regression, and XGBoost on healthcare data to predict stroke risk.",
-    link: "https://github.com/bilal99u/Stroke_prediction",
-    tags: ["XGBoost", "Sklearn"],
-  },
-  {
-    title: "PCA – Penguins Dataset",
-    desc: "Principal Component Analysis for dimensionality reduction and data visualization.",
-    link: "https://github.com/bilal99u/PCA_penguins_dataset",
-    tags: ["PCA", "Python"],
-  },
-  {
-    title: "K-Means Clustering",
-    desc: "K-Means clustering implemented from scratch in Python with visualization.",
-    link: "https://github.com/bilal99u/k_means-initial",
-    tags: ["Clustering", "Python"],
-  },
-  {
-    title: "Wine Model",
-    desc: "Classification model for the wine dataset with performance tuning and visualization.",
-    link: "https://github.com/bilal99u/wine_model",
-    tags: ["Classification", "Python"],
-  },
-];
-
-const NAV = ["about", "education", "skills", "experience", "projects", "contact"];
 
 export default function Portfolio() {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('');
+  const [modal, setModal] = useState<Project | null>(null);
 
   useEffect(() => {
-    document.documentElement.style.scrollBehavior = "smooth";
+    document.documentElement.style.scrollBehavior = 'smooth';
   }, []);
 
   useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
+    const sections = document.querySelectorAll('section[id]');
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.3 }
     );
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <div
-      className="min-h-screen text-gray-900"
-      style={{ fontFamily: "'IBM Plex Mono', 'Courier New', monospace", background: "#f5f3ee" }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap');
-        :root {
-          --bg: #f5f3ee;
-          --ink: #1a1814;
-          --accent: #c0392b;
-          --accent2: #e8dcc8;
-          --card: #ffffff;
-          --muted: #6b6560;
-          --border: #ddd9d2;
-          --tag-bg: #1a1814;
-          --tag-text: #f5f3ee;
-        }
-        .syne { font-family: 'Syne', sans-serif; }
-        .nav-link { position: relative; letter-spacing: 0.08em; font-size: 0.7rem; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
-        .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.25s; }
-        .nav-link:hover, .nav-link.nav-active { color: var(--accent); }
-        .nav-link:hover::after, .nav-link.nav-active::after { width: 100%; }
-        .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); font-size: 0.6rem; padding: 2px 7px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .card { background: var(--card); border: 1px solid var(--border); transition: border-color 0.2s, box-shadow 0.2s; }
-        .card:hover { border-color: var(--accent); box-shadow: 4px 4px 0 var(--accent); }
-        .section-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem; }
-        .rule { height: 1px; background: var(--border); }
-        .exp-card { border-left: 3px solid var(--accent); padding-left: 1.25rem; }
-        .hero-tag { border: 1px solid rgba(255,255,255,0.4); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; color: rgba(255,255,255,0.85); }
-        .skill-row { border-bottom: 1px solid var(--border); padding: 1rem 0; display: grid; grid-template-columns: 200px 1fr; gap: 1rem; align-items: start; }
-        @media (max-width: 640px) { .skill-row { grid-template-columns: 1fr; } }
-        .org-pill { border: 1px solid var(--border); padding: 0.75rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
-        .bullet-dot::before { content: '→'; margin-right: 0.5rem; color: var(--accent); }
-      `}</style>
+  useEffect(() => {
+    if (modal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [modal]);
 
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navigation */}
-      <nav
-        style={{ background: "rgba(245,243,238,0.95)", borderBottom: "1px solid var(--border)" }}
-        className="fixed top-0 w-full z-50 backdrop-blur-sm"
-      >
-        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="syne font-bold text-sm tracking-tight" style={{ color: "var(--ink)" }}>
-            Ahmad Bilal Irfan
-          </span>
-          <div className="flex gap-6">
-            {NAV.map((id) => (
-              <a key={id} href={`#${id}`} className={`nav-link${active === id ? " nav-active" : ""}`}>
-                {id}
-              </a>
-            ))}
+      <nav className="fixed top-0 w-full bg-white shadow-sm z-50">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+          <h1 className="text-lg font-semibold">Ahmad Bilal Irfan</h1>
+          <div className="space-x-6 text-sm font-medium">
+            <a href="#about" className={active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>About</a>
+            <a href="#projects" className={active === 'projects' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Projects</a>
+            <a href="#links" className={active === 'links' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Links</a>
+            <a href="#contact" className={active === 'contact' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Contact</a>
           </div>
         </div>
+        <div className="h-0.5 bg-blue-100 w-full"></div>
       </nav>
 
-      {/* Hero */}
-      <section
-        className="relative flex items-end justify-start overflow-hidden"
-        style={{ height: "100vh" }}
-      >
+      {/* Hero Section */}
+      <section className="relative flex flex-col md:flex-row justify-center items-center h-screen text-center md:text-left px-6 md:px-16 overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://cdn.builtin.com/sites/www.builtin.com/files/2024-04/FPGA%201200x635.jpg')",
-            filter: "grayscale(30%) contrast(1.1)",
-          }}
+          className="absolute inset-0 bg-cover bg-center opacity-50"
+          style={{ backgroundImage: "url('https://cdn.builtin.com/sites/www.builtin.com/files/2024-04/FPGA%201200x635.jpg')" }}
         />
-        <div
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(135deg, rgba(20,16,10,0.88) 0%, rgba(20,16,10,0.6) 60%, rgba(20,16,10,0.4) 100%)" }}
-        />
-
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-6 pb-20 w-full flex flex-col md:flex-row md:items-end md:justify-between gap-10">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex gap-2 mb-5 flex-wrap"
-            >
-              {["FPGA / ASIC", "Embedded Systems", "RTL Verification", "MEng ECE"].map((t) => (
-                <span key={t} className="hero-tag">{t}</span>
-              ))}
-            </motion.div>
-
-            <motion.h1
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+          <div className="max-w-xl bg-black/40 p-6 rounded-2xl backdrop-blur-sm">
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="syne text-5xl md:text-7xl font-extrabold text-white leading-none tracking-tight mb-4"
+              transition={{ duration: 0.6 }}
+              className="text-3xl md:text-5xl font-bold mb-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
             >
-              Ahmad<br />
-              <span style={{ color: "var(--accent)" }}>Bilal</span> Irfan
-            </motion.h1>
-
+              FPGA / ASIC &amp; Embedded Systems Engineer
+            </motion.h2>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.6 }}
-              className="text-sm tracking-widest uppercase mb-8"
-              style={{ color: "rgba(255,255,255,0.55)" }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="max-w-2xl text-gray-100 font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
             >
-              University of Waterloo — GPA 3.8 / 4.0
+              SystemVerilog &bull; UVM &bull; RTL Design &bull; CAN-Bus &bull; RISC-V &bull; MEng ECE @ University of Waterloo
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex gap-4"
-            >
-              <a
-                href="https://github.com/bilal99u"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest font-medium transition-all"
-                style={{ background: "var(--accent)", color: "#fff" }}
-              >
-                <Github size={14} /> GitHub
-              </a>
-              <a
-                href="https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest font-medium border transition-all hover:bg-white hover:text-gray-900"
-                style={{ border: "1px solid rgba(255,255,255,0.4)", color: "#fff" }}
-              >
-                <Linkedin size={14} /> LinkedIn
-              </a>
-            </motion.div>
           </div>
-
-          {/* Profile photo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="flex-shrink-0"
-            style={{ width: 180, height: 180, border: "3px solid var(--accent)", overflow: "hidden" }}
+            className="rounded-full border-4 border-white shadow-xl overflow-hidden w-40 h-40 md:w-56 md:h-56 flex-shrink-0"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/CV.jpg" alt="Ahmad Bilal Irfan" className="w-full h-full object-cover" />
           </motion.div>
         </div>
-
-        <a
-          href="#about"
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white opacity-50 animate-bounce"
-        >
-          <ChevronDown size={22} />
-        </a>
       </section>
 
-      {/* About */}
-      <section id="about" className="max-w-4xl mx-auto px-6 py-28 scroll-mt-24">
-        <p className="section-label">01 — About</p>
-        <div className="rule mb-8" />
-        <div className="grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="syne text-3xl font-bold mb-5" style={{ color: "var(--ink)" }}>
-              Building reliable<br />hardware from first principles.
-            </h2>
-          </div>
-          <div style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.85 }}>
-            <p>
-              I'm a Master of Engineering candidate in Electrical and Computer Engineering at the
-              University of Waterloo (GPA 3.8/4.0), specializing in digital systems, FPGA/ASIC
-              design, and hardware verification. My work focuses on building efficient, reliable
-              hardware systems — from cycle-accurate RTL pipelines to coverage-driven verification
-              frameworks.
-            </p>
-            <p className="mt-4">
-              I'm currently a Research Assistant at the Safety-Critical Real-Time Systems Lab and
-              a member of UWASIC's control path design team. My background spans constrained-random
-              verification, UVM methodology, embedded firmware, and ML-accelerator architecture
-              exploration.
-            </p>
-          </div>
-        </div>
+      {/* About Section */}
+      <section id="about" className="max-w-4xl mx-auto px-4 py-24 scroll-mt-24">
+        <h3 className="text-2xl font-semibold mb-4">About</h3>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          I am a Master of Engineering candidate in Electrical and Computer Engineering at the University of Waterloo (GPA 3.8/4.0),
+          specializing in RTL design, FPGA/ASIC verification, and embedded hardware. My focus is on building efficient,
+          reliable hardware systems -- from cycle-accurate processor pipelines to coverage-driven verification frameworks.
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          I am currently a Research Assistant at the Safety-Critical Real-Time Systems Lab, where I design and verify
+          RTL CAN-Bus modules on FPGA, and a member of the UWASIC control path design team. Previously, I interned as
+          an ASIC Design and Verification Engineer at the National Institute of Electronics, contributing to a custom
+          solar-tracking IC that achieved an 82% accuracy improvement through simulation-driven RTL refinement.
+        </p>
+        <p className="text-gray-700 leading-relaxed">
+          My skill set spans SystemVerilog (UVM, SVA, CRV), Verilog, C/C++, Python, and industry EDA tools including
+          QuestaSim, Xilinx Vivado, and Intel Quartus. I am actively targeting hardware verification, ASIC design,
+          and embedded firmware roles.
+        </p>
       </section>
 
-      {/* Education */}
-      <section id="education" style={{ background: "var(--card)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }} className="py-24 scroll-mt-24">
-        <div className="max-w-4xl mx-auto px-6">
-          <p className="section-label">02 — Education</p>
-          <div className="rule mb-8" />
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                degree: "M.Eng. Electrical & Computer Engineering",
-                school: "University of Waterloo",
-                location: "Waterloo, Canada",
-                gpa: "GPA 3.8 / 4.0",
-                period: "May 2025 – May 2027",
-                note: "Current",
-              },
-              {
-                degree: "B.Eng. Electrical Engineering (Electronics)",
-                school: "Bahria University",
-                location: "Islamabad, Pakistan",
-                gpa: "GPA 3.92 / 4.0",
-                period: "Sept 2017 – Aug 2021",
-                note: "Summa Cum Laude",
-              },
-            ].map((e) => (
-              <div key={e.school} className="card p-6">
-                <span
-                  className="text-xs font-medium uppercase tracking-widest mb-3 inline-block"
-                  style={{ color: "var(--accent)" }}
-                >
-                  {e.note}
-                </span>
-                <h3 className="syne font-bold text-lg mb-1" style={{ color: "var(--ink)" }}>
-                  {e.degree}
-                </h3>
-                <p className="font-medium text-sm mb-1">{e.school}</p>
-                <p className="text-xs mb-3" style={{ color: "var(--muted)" }}>
-                  {e.location} · {e.period}
-                </p>
-                <span
-                  className="text-xs font-bold tracking-wider px-3 py-1 inline-block"
-                  style={{ background: "var(--ink)", color: "var(--bg)" }}
-                >
-                  {e.gpa}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Projects Section */}
+      <section id="projects" className="bg-white py-24 scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-4">
+          <h3 className="text-2xl font-semibold mb-8">Projects</h3>
 
-      {/* Skills */}
-      <section id="skills" className="max-w-4xl mx-auto px-6 py-28 scroll-mt-24">
-        <p className="section-label">03 — Skills</p>
-        <div className="rule mb-2" />
-        {SKILLS.map((s) => (
-          <div key={s.category} className="skill-row">
-            <span className="font-medium text-xs uppercase tracking-widest" style={{ color: "var(--ink)" }}>
-              {s.category}
-            </span>
-            <span className="text-sm" style={{ color: "var(--muted)", lineHeight: 1.7 }}>
-              {s.items}
-            </span>
-          </div>
-        ))}
-      </section>
-
-      {/* Experience */}
-      <section id="experience" style={{ background: "var(--card)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }} className="py-24 scroll-mt-24">
-        <div className="max-w-4xl mx-auto px-6">
-          <p className="section-label">04 — Experience</p>
-          <div className="rule mb-10" />
-          <div className="flex flex-col gap-12">
-            {EXPERIENCE.map((e) => (
-              <div key={e.role} className="exp-card">
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                  <div>
-                    <h3 className="syne font-bold text-lg" style={{ color: "var(--ink)" }}>
-                      {e.role}
-                    </h3>
-                    <p className="text-sm" style={{ color: "var(--muted)" }}>
-                      {e.org} · {e.location}
-                    </p>
-                  </div>
-                  <span className="tag">{e.period}</span>
-                </div>
-                <ul className="flex flex-col gap-2 mt-3">
-                  {e.bullets.map((b) => (
-                    <li key={b} className="bullet-dot text-sm" style={{ color: "var(--muted)", lineHeight: 1.75 }}>
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section id="projects" className="py-24 scroll-mt-24">
-        <div className="max-w-5xl mx-auto px-6">
-          <p className="section-label">05 — Projects</p>
-          <div className="rule mb-12" />
-
-          {/* Hardware */}
-          <div className="flex items-center gap-4 mb-8">
-            <h3 className="syne font-bold text-xl" style={{ color: "var(--ink)" }}>Hardware & Embedded Systems</h3>
-            <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-          </div>
-          <div className="grid md:grid-cols-3 gap-5 mb-16">
-            {HW_PROJECTS.map((p, i) => (
+          <h4 className="text-xl font-semibold mb-4 text-blue-600">Hardware &amp; Embedded Systems</h4>
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {HW_PROJECTS.map((p) => (
               <motion.div
                 key={p.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05, duration: 0.4 }}
-                className="card p-5 flex flex-col"
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: 'spring', stiffness: 150 }}
+                className="p-6 border border-gray-200 rounded-xl shadow-md hover:shadow-lg bg-gray-50 transition-transform flex flex-col"
               >
-                <h4 className="syne font-semibold text-sm mb-2" style={{ color: "var(--ink)", lineHeight: 1.4 }}>
-                  {p.title}
-                </h4>
-                <p className="text-xs flex-1 mb-4" style={{ color: "var(--muted)", lineHeight: 1.75 }}>
-                  {p.desc}
-                </p>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {p.tags.map((t) => (
-                    <span key={t} className="tag">{t}</span>
+                <h4 className="text-base font-semibold mb-2">{p.title}</h4>
+                <p className="text-sm text-gray-600 mb-3 flex-1">{p.desc}</p>
+                {p.tags && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {p.tags.map((t) => (
+                      <span key={t} className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{t}</span>
+                    ))}
+                  </div>
+                )}
+                <button
+                  onClick={() => setModal(p)}
+                  className="text-blue-600 text-sm font-medium hover:underline text-left"
+                >
+                  View Details &rarr;
+                </button>
+              </motion.div>
+            ))}
+          </div>
+
+          <h4 className="text-xl font-semibold mb-4 text-blue-600">Machine Learning &amp; AI</h4>
+          <div className="grid md:grid-cols-3 gap-8">
+            {ML_PROJECTS.map((p) => (
+              <motion.div
+                key={p.title}
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: 'spring', stiffness: 150 }}
+                className="p-6 border border-gray-200 rounded-xl shadow-md hover:shadow-lg bg-gray-50 transition-transform flex flex-col"
+              >
+                <h4 className="text-base font-semibold mb-2">{p.title}</h4>
+                <p className="text-sm text-gray-600 mb-3 flex-1">{p.desc}</p>
+                {p.tags && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {p.tags.map((t) => (
+                      <span key={t} className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{t}</span>
+                    ))}
+                  </div>
+                )}
+                <button
+                  onClick={() => setModal(p)}
+                  className="text-blue-600 text-sm font-medium hover:underline text-left"
+                >
+                  View Details &rarr;
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Links Section */}
+      <section id="links" className="max-w-4xl mx-auto px-4 py-24 text-center scroll-mt-24">
+        <h3 className="text-2xl font-semibold mb-8">Links</h3>
+        <div className="flex justify-center space-x-8">
+          <a href="https://github.com/bilal99u" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Github size={28} /></a>
+          <a href="https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Linkedin size={28} /></a>
+          <a href="mailto:abirfan@uwaterloo.ca" className="text-gray-700 hover:text-blue-600 transition-colors"><Mail size={28} /></a>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="bg-gray-100 py-24 scroll-mt-24">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h3 className="text-2xl font-semibold mb-4">Contact</h3>
+          <p className="text-gray-600 mb-6">Interested in collaborating or discussing hardware design, AI, or embedded systems? Feel free to reach out.</p>
+          <motion.a
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            href="mailto:abirfan@uwaterloo.ca"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Get in Touch
+          </motion.a>
+        </div>
+      </section>
+
+      <footer className="text-center text-gray-500 text-sm py-6 border-t">
+        &copy; {new Date().getFullYear()} Ahmad Bilal Irfan
+      </footer>
+
+      {/* Project Modal */}
+      <AnimatePresence>
+        {modal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setModal(null)}
+            />
+            <motion.div
+              className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 z-10"
+              initial={{ scale: 0.92, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+            >
+              <button
+                onClick={() => setModal(null)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+              <h3 className="text-lg font-bold text-gray-900 mb-3 pr-6">{modal.title}</h3>
+              {modal.tags && (
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {modal.tags.map((t) => (
+                    <span key={t} className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{t}</span>
                   ))}
                 </div>
-                {p.link !== "#" && (
+              )}
+              <p className="text-gray-600 text-sm leading-relaxed mb-5">{modal.details}</p>
+              <div className="flex gap-3">
+                {modal.link && modal.link !== '#' && (
                   <a
-                    href={p.link}
+                    href={modal.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs uppercase tracking-widest font-medium transition-colors"
-                    style={{ color: "var(--accent)" }}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
                   >
-                    GitHub →
+                    <Github size={14} /> View on GitHub
                   </a>
                 )}
-              </motion.div>
-            ))}
-          </div>
-
-          {/* ML */}
-          <div className="flex items-center gap-4 mb-8">
-            <h3 className="syne font-bold text-xl" style={{ color: "var(--ink)" }}>Machine Learning & AI</h3>
-            <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-          </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            {ML_PROJECTS.map((p, i) => (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05, duration: 0.4 }}
-                className="card p-5 flex flex-col"
-              >
-                <h4 className="syne font-semibold text-sm mb-2" style={{ color: "var(--ink)", lineHeight: 1.4 }}>
-                  {p.title}
-                </h4>
-                <p className="text-xs flex-1 mb-4" style={{ color: "var(--muted)", lineHeight: 1.75 }}>
-                  {p.desc}
-                </p>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {p.tags.map((t) => (
-                    <span key={t} className="tag">{t}</span>
-                  ))}
-                </div>
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs uppercase tracking-widest font-medium transition-colors"
-                  style={{ color: "var(--accent)" }}
+                <button
+                  onClick={() => setModal(null)}
+                  className="px-4 py-2 border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50 transition"
                 >
-                  GitHub →
-                </a>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Organizations */}
-      <section style={{ background: "var(--card)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }} className="py-20 scroll-mt-24">
-        <div className="max-w-4xl mx-auto px-6">
-          <p className="section-label">06 — Organizations</p>
-          <div className="rule mb-8" />
-          <div className="flex flex-wrap gap-4">
-            {[
-              { name: "UWASIC – Control Path Design & Verification", sub: "University of Waterloo", period: "May 2025 – Present" },
-              { name: "Institute of Electrical and Electronics Engineers (IEEE)", sub: "Member", period: "Aug 2019 – Aug 2021" },
-            ].map((o) => (
-              <div key={o.name} className="org-pill card flex-1" style={{ minWidth: 260 }}>
-                <div
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center text-xs font-bold"
-                  style={{ background: "var(--accent)", color: "#fff" }}
-                >
-                  {o.name[0]}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: "var(--ink)" }}>{o.name}</p>
-                  <p className="text-xs" style={{ color: "var(--muted)" }}>{o.sub} · {o.period}</p>
-                </div>
+                  Close
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="py-28 scroll-mt-24">
-        <div className="max-w-4xl mx-auto px-6">
-          <p className="section-label">07 — Contact</p>
-          <div className="rule mb-12" />
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="syne text-4xl font-extrabold mb-4" style={{ color: "var(--ink)", lineHeight: 1.15 }}>
-                Let's build<br />
-                <span style={{ color: "var(--accent)" }}>something fast.</span>
-              </h2>
-              <p className="text-sm mb-8" style={{ color: "var(--muted)", lineHeight: 1.8 }}>
-                Open to hardware verification, ASIC/FPGA design, embedded firmware, and research
-                collaboration roles. Reach out anytime.
-              </p>
-              <div className="flex gap-4">
-                {[
-                  { href: "https://github.com/bilal99u", icon: <Github size={16} />, label: "GitHub" },
-                  { href: "https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/", icon: <Linkedin size={16} />, label: "LinkedIn" },
-                  { href: "mailto:abirfan@uwaterloo.ca", icon: <Mail size={16} />, label: "Email" },
-                ].map((l) => (
-                  <a
-                    key={l.label}
-                    href={l.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 text-xs uppercase tracking-widest font-medium border transition-all hover:border-red-600 hover:text-red-600"
-                    style={{ border: "1px solid var(--border)", color: "var(--muted)" }}
-                  >
-                    {l.icon} {l.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <motion.a
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              href="mailto:abirfan@uwaterloo.ca"
-              className="flex flex-col justify-center items-start p-10 transition-all"
-              style={{
-                background: "var(--ink)",
-                color: "#fff",
-                height: 200,
-                textDecoration: "none",
-              }}
-            >
-              <span className="text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>
-                abirfan@uwaterloo.ca
-              </span>
-              <span className="syne text-2xl font-bold">Send a message →</span>
-            </motion.a>
-          </div>
-        </div>
-      </section>
-
-      <footer
-        className="text-center py-6 text-xs uppercase tracking-widest"
-        style={{ borderTop: "1px solid var(--border)", color: "var(--muted)" }}
-      >
-        © {new Date().getFullYear()} Ahmad Bilal Irfan — All rights reserved
-      </footer>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
