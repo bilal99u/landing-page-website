@@ -73,6 +73,21 @@ const HW_PROJECTS: Project[] = [
   },
 ];
 
+const POWER_PROJECTS: Project[] = [
+  {
+    title: 'MPPT Solar Charge Controller & 12V DC Regulated Power Supply',
+    desc: 'Buck converter-based MPPT circuit for a solar cooling system achieving ~78% tracking efficiency and ~30% reduction in power loss over direct-connect baseline.',
+    details: `Designed and tested a DC-DC buck converter-based Maximum Power Point Tracking (MPPT) circuit for a solar-powered cooling system. Identified and resolved component-level failure modes during bring-up, achieving approximately 78% tracking efficiency and a 30% reduction in power loss compared to a direct-connect baseline.\n\nAlso built and validated a 220V AC to 12V DC regulated PCB power supply comprising a step-down transformer, bridge rectifier, and 7812 linear regulator. Performed load regulation and ripple testing, confirming under 50mV output ripple at full load, with results documented against design specification.`,
+    tags: ['Power Electronics', 'DC-DC Converter', 'MPPT', 'PCB Design', 'Proteus'],
+  },
+  {
+    title: 'FM Transceiver -- RF Circuit Design, Fault Diagnosis, and PCB Validation',
+    desc: 'FM transmitter and receiver designed in Proteus from schematic to etched PCB; stable operation across 88-108 MHz with ~30m reception range and <3% THD.',
+    details: `Designed FM transmitter and receiver circuits in Proteus, taking the design from schematic capture through to a fully etched PCB. Diagnosed and resolved inter-stage interference and impedance mismatch faults that emerged during bring-up, restoring stable operation across the full 88-108 MHz FM band.\n\nValidated end-to-end RF link performance with approximately 30m reception range and less than 3% Total Harmonic Distortion (THD) on the demodulated audio output. Documented all failure observations and layout corrections in a structured engineering report.`,
+    tags: ['RF Design', 'PCB Layout', 'Proteus', 'Fault Diagnosis', 'Impedance Matching'],
+  },
+];
+
 const ML_PROJECTS: Project[] = [
   {
     title: 'CNN LeNet',
@@ -264,6 +279,34 @@ export default function Portfolio() {
             ))}
           </div>
 
+          <h4 className="text-xl font-semibold mb-4 text-blue-600">Power Electronics &amp; RF</h4>
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {POWER_PROJECTS.map((p) => (
+              <motion.div
+                key={p.title}
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: 'spring', stiffness: 150 }}
+                className="p-6 border border-gray-200 rounded-xl shadow-md hover:shadow-lg bg-gray-50 transition-transform flex flex-col"
+              >
+                <h4 className="text-base font-semibold mb-2">{p.title}</h4>
+                <p className="text-sm text-gray-600 mb-3 flex-1">{p.desc}</p>
+                {p.tags && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {p.tags.map((t) => (
+                      <span key={t} className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{t}</span>
+                    ))}
+                  </div>
+                )}
+                <button
+                  onClick={() => setModal(p)}
+                  className="text-blue-600 text-sm font-medium hover:underline text-left"
+                >
+                  View Details &rarr;
+                </button>
+              </motion.div>
+            ))}
+          </div>
+
           <h4 className="text-xl font-semibold mb-4 text-blue-600">Machine Learning &amp; AI</h4>
           <div className="grid md:grid-cols-3 gap-8">
             {ML_PROJECTS.map((p) => (
@@ -359,7 +402,11 @@ export default function Portfolio() {
                   ))}
                 </div>
               )}
-              <p className="text-gray-600 text-sm leading-relaxed mb-5">{modal.details}</p>
+              <div className="text-gray-600 text-sm leading-relaxed mb-5 flex flex-col gap-3">
+                {modal.details.split('\n\n').map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
               <div className="flex gap-3">
                 {modal.link && modal.link !== '#' && (
                   <a
