@@ -148,9 +148,13 @@ export default function LibraryPage() {
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
           <Link href="/" className="font-semibold tracking-tight">Ahmad Bilal Irfan</Link>
-          <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-700">
-            <ArrowLeft size={16} /> Back to portfolio
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/tools" className="text-sm text-slate-400 transition hover:text-cyan-300">Tools</Link>
+            <Link href="/notes" className="text-sm text-slate-400 transition hover:text-cyan-300">Notes</Link>
+            <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-700">
+              <ArrowLeft size={16} /> Portfolio
+            </Link>
+          </div>
         </div>
       </header>
 

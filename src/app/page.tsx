@@ -196,7 +196,9 @@ export default function Portfolio() {
           <div className="flex items-center gap-3 whitespace-nowrap text-sm font-medium sm:gap-6">
             <a href="#about" className={`hidden sm:inline ${active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>About</a>
             <a href="#projects" className={active === 'projects' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Projects</a>
-            <a href="/library" className="hover:text-blue-600 transition-colors">Library</a>
+            <Link href="/library" className="hover:text-blue-600 transition-colors">Library</Link>
+            <Link href="/tools" className="hover:text-blue-600 transition-colors">Tools</Link>
+            <Link href="/notes" className="hidden sm:inline hover:text-blue-600 transition-colors">Notes</Link>
             <a href="#links" className={`hidden sm:inline ${active === 'links' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>Links</a>
             <a href="#contact" className="hidden md:inline hover:text-blue-600 transition-colors">Contact</a>
           </div>
@@ -378,7 +380,7 @@ export default function Portfolio() {
       {/* Links Section */}
       <section id="links" className="max-w-4xl mx-auto px-4 py-24 text-center scroll-mt-24">
         <h3 className="text-2xl font-semibold mb-8">Links</h3>
-        <p className="text-gray-600 mb-6">Browse my FPGA notes, references, and saved resources in the <a href="/library" className="font-medium text-blue-600 hover:underline">Engineering Library</a>.</p>
+        <p className="text-gray-600 mb-6">Browse my FPGA notes, references, and saved resources in the <Link href="/library" className="font-medium text-blue-600 hover:underline">Engineering Library</Link>.</p>
         <div className="flex justify-center space-x-8">
           <a href="https://github.com/bilal99u" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Github size={28} /></a>
           <a href="https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Linkedin size={28} /></a>

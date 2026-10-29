@@ -11,6 +11,8 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 - 🧠 **Framer Motion Animations** — subtle transitions and hover effects  
 - 🧩 **Sections** — About, FPGA and hardware projects, Links, and Contact  
 - 📚 **Engineering Library** — shareable FPGA references with browser-local saved resources at `/library`  
+- 🧰 **FPGA Tools** — PCIe bandwidth, timing-budget, and hex/binary calculators at `/tools`
+- 📝 **Lab Notes** — a searchable, browser-local engineering notebook at `/notes`
 - 💡 **Smooth Scrolling Navigation**  
 - 📱 **Fully Responsive Design**  
 - ☁️ **Deployed via Vercel (free hosting)**  
@@ -32,7 +34,7 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 - [Lucide React Icons](https://lucide.dev/)
 - Deployed on [Vercel](https://vercel.com/)
 
-The Engineering Library is a curated set of public references. Saved items are stored only in the current browser and are not synced between devices.
+The Engineering Library is a curated set of public references. Saved items and lab notes are stored only in the current browser and are not synced between devices.
 
 ---
 
@@ -42,7 +44,9 @@ landing-page-website/
 ├─ src/
 │  ├─ app/
 │  │  ├─ page.tsx               # Main landing page
-│  │  └─ library/page.tsx       # Shareable reference library
+│  │  ├─ library/page.tsx       # Shareable reference library
+│  │  ├─ tools/page.tsx         # FPGA calculators
+│  │  └─ notes/page.tsx         # Local lab notebook
 │  └─ styles/                   # Global styles
 ├─ public/                      # Static assets (icons, images)
 ├─ package.json                 # Dependencies and scripts

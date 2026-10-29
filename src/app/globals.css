@@ -26,7 +26,9 @@ body {
 }
 
 .portfolio-theme,
-.library-theme {
+.library-theme,
+.tools-theme,
+.notes-theme {
   min-height: 100vh;
   background:
     radial-gradient(ellipse at 75% 0%, rgb(29 78 116 / 18%), transparent 34rem),
@@ -188,7 +190,9 @@ body {
 }
 
 .portfolio-theme :focus-visible,
-.library-theme :focus-visible {
+.library-theme :focus-visible,
+.tools-theme :focus-visible,
+.notes-theme :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }

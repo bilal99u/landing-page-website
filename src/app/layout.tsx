@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ahmad Bilal Irfan | FPGA & Hardware Engineer",
-  description: "FPGA, ASIC, and embedded systems portfolio featuring RTL projects, high-speed interface design focus areas, and an engineering resource library.",
+  description: "FPGA and ASIC portfolio with PCIe bandwidth and timing tools, a browser-local lab notebook, high-speed interface design focus areas, and an engineering resource library.",
 };
 
 export default function RootLayout({
