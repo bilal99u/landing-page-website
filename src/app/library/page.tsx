@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Bookmark, Check, Copy, Search, Share2 } from "lucide-react";
 
 type Resource = {
@@ -146,10 +147,10 @@ export default function LibraryPage() {
     <main className="min-h-screen bg-[#f7f8fa] text-slate-900">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-          <a href="/" className="font-semibold tracking-tight">Ahmad Bilal Irfan</a>
-          <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-700">
+          <Link href="/" className="font-semibold tracking-tight">Ahmad Bilal Irfan</Link>
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-700">
             <ArrowLeft size={16} /> Back to portfolio
-          </a>
+          </Link>
         </div>
       </header>
 

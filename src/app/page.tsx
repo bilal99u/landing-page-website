@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Github, Linkedin, Mail, X } from 'lucide-react';
 
@@ -191,7 +192,7 @@ export default function Portfolio() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white shadow-sm z-50">
         <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-          <a href="/" className="text-lg font-semibold">Ahmad Bilal Irfan</a>
+          <Link href="/" className="text-lg font-semibold">Ahmad Bilal Irfan</Link>
           <div className="flex items-center gap-3 whitespace-nowrap text-sm font-medium sm:gap-6">
             <a href="#about" className={`hidden sm:inline ${active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>About</a>
             <a href="#projects" className={active === 'projects' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Projects</a>
