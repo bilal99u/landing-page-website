@@ -188,7 +188,7 @@ export default function Portfolio() {
   }, [modal]);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="portfolio-theme min-h-screen bg-gray-50 text-gray-900">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white shadow-sm z-50">
         <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">

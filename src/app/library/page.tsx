@@ -144,7 +144,7 @@ export default function LibraryPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f8fa] text-slate-900">
+    <main className="library-theme min-h-screen bg-[#080d17] text-slate-900">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
           <Link href="/" className="font-semibold tracking-tight">Ahmad Bilal Irfan</Link>
