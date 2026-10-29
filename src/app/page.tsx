@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Linkedin, Mail, X } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, X } from 'lucide-react';
 
 type Project = {
   title: string;
@@ -70,6 +70,21 @@ const HW_PROJECTS: Project[] = [
     details: `Implemented a Rate Monotonic Scheduling (RMS) algorithm in Python. Performs schedulability analysis using the Liu and Layland utilization bound, simulates CPU task execution on a timeline, and visualizes Gantt charts for task sets. Useful for validating real-time system designs before hardware implementation.`,
     tags: ['Python', 'RTOS', 'Scheduling'],
     link: 'https://github.com/bilal99u/Rate_Monotonic_Scheduler',
+  },
+];
+
+const FPGA_FOCUS: Project[] = [
+  {
+    title: 'Serial Lite III FPGA Link',
+    desc: 'Design focus: FPGA-to-FPGA streaming over high-speed transceivers, with attention to link bring-up, clocking, framing, and data integrity.',
+    details: `A high-speed serial design focus around Intel FPGA Serial Lite III IP and transceiver-based links. Key engineering topics include lane and clock planning, link initialization, framing, throughput and latency trade-offs, reset sequencing, and end-to-end data-integrity checks. A complete implementation should document the target FPGA, lane rate, IP configuration, test setup, and measured results.`,
+    tags: ['FPGA', 'Serial Lite III', 'Transceivers', 'Link bring-up'],
+  },
+  {
+    title: 'PCI Express Gen3 FPGA Endpoint',
+    desc: 'Design focus: a PCIe Gen3 endpoint architecture spanning transceiver configuration, link training, packet handling, and host-side validation.',
+    details: `A PCI Express Gen3 FPGA design focus built around an endpoint and its high-speed transceiver interface. The architecture spans the 8.0 GT/s-per-lane physical link, PCIe link training and status, transaction-layer packet handling, DMA data movement, clock-domain boundaries, and host-side validation. A complete implementation should include the target device and IP configuration, software or driver setup, throughput measurements, and error-recovery results.`,
+    tags: ['FPGA', 'PCIe Gen3', '8.0 GT/s', 'DMA', 'Transceivers'],
   },
 ];
 
@@ -176,12 +191,13 @@ export default function Portfolio() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white shadow-sm z-50">
         <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-          <h1 className="text-lg font-semibold">Ahmad Bilal Irfan</h1>
-          <div className="space-x-6 text-sm font-medium">
-            <a href="#about" className={active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>About</a>
+          <a href="/" className="text-lg font-semibold">Ahmad Bilal Irfan</a>
+          <div className="flex items-center gap-3 whitespace-nowrap text-sm font-medium sm:gap-6">
+            <a href="#about" className={`hidden sm:inline ${active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>About</a>
             <a href="#projects" className={active === 'projects' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Projects</a>
-            <a href="#links" className={active === 'links' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Links</a>
-            <a href="#contact" className={active === 'contact' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Contact</a>
+            <a href="/library" className="hover:text-blue-600 transition-colors">Library</a>
+            <a href="#links" className={`hidden sm:inline ${active === 'links' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>Links</a>
+            <a href="#contact" className="hidden md:inline hover:text-blue-600 transition-colors">Contact</a>
           </div>
         </div>
         <div className="h-0.5 bg-blue-100 w-full"></div>
@@ -191,7 +207,7 @@ export default function Portfolio() {
       <section className="relative flex flex-col md:flex-row justify-center items-center h-screen text-center md:text-left px-6 md:px-16 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-50"
-          style={{ backgroundImage: "url('https://cdn.builtin.com/sites/www.builtin.com/files/2024-04/FPGA%201200x635.jpg')" }}
+          style={{ backgroundImage: "url('/fpga-bg.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
@@ -210,8 +226,11 @@ export default function Portfolio() {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="max-w-2xl text-gray-100 font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
             >
-              SystemVerilog &bull; UVM &bull; RTL Design &bull; CAN-Bus &bull; RISC-V &bull; MEng ECE @ University of Waterloo
+              FPGA architecture &bull; SystemVerilog &bull; RTL verification &bull; High-speed serial links &bull; MEng ECE @ University of Waterloo
             </motion.p>
+            <a href="#projects" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+              Explore projects <ArrowRight size={16} />
+            </a>
           </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -241,8 +260,8 @@ export default function Portfolio() {
         </p>
         <p className="text-gray-700 leading-relaxed">
           My skill set spans SystemVerilog (UVM, SVA, CRV), Verilog, C/C++, Python, and industry EDA tools including
-          QuestaSim, Xilinx Vivado, and Intel Quartus. I am actively targeting hardware verification, ASIC design,
-          and embedded firmware roles.
+          QuestaSim, Xilinx Vivado, and Intel Quartus. I am especially interested in FPGA architecture, high-speed
+          transceiver-based interfaces, hardware verification, and embedded systems.
         </p>
       </section>
 
@@ -250,6 +269,24 @@ export default function Portfolio() {
       <section id="projects" className="bg-white py-24 scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4">
           <h3 className="text-2xl font-semibold mb-8">Projects</h3>
+
+          <h4 className="text-xl font-semibold mb-2 text-blue-600">FPGA &amp; High-Speed Interfaces</h4>
+          <p className="text-sm text-gray-600 mb-4">Current design focus areas — implementation details and measured results will be added as projects are completed.</p>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {FPGA_FOCUS.map((p) => (
+              <article key={p.title} className="rounded-xl border border-blue-100 bg-blue-50/50 p-6 shadow-sm">
+                <h5 className="text-base font-semibold mb-2">{p.title}</h5>
+                <p className="text-sm text-gray-600 mb-4">{p.desc}</p>
+                {p.tags && (
+                  <div className="flex flex-wrap gap-1">
+                    {p.tags.map((t) => (
+                      <span key={t} className="text-xs bg-white text-blue-700 border border-blue-100 px-2 py-0.5 rounded">{t}</span>
+                    ))}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
 
           <h4 className="text-xl font-semibold mb-4 text-blue-600">Hardware &amp; Embedded Systems</h4>
           <div className="grid md:grid-cols-3 gap-8 mb-16">
@@ -340,6 +377,7 @@ export default function Portfolio() {
       {/* Links Section */}
       <section id="links" className="max-w-4xl mx-auto px-4 py-24 text-center scroll-mt-24">
         <h3 className="text-2xl font-semibold mb-8">Links</h3>
+        <p className="text-gray-600 mb-6">Browse my FPGA notes, references, and saved resources in the <a href="/library" className="font-medium text-blue-600 hover:underline">Engineering Library</a>.</p>
         <div className="flex justify-center space-x-8">
           <a href="https://github.com/bilal99u" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Github size={28} /></a>
           <a href="https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Linkedin size={28} /></a>

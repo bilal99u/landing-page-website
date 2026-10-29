@@ -9,7 +9,8 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 
 - ⚡ **Next.js 15 + TailwindCSS** — lightweight, responsive, and production-ready  
 - 🧠 **Framer Motion Animations** — subtle transitions and hover effects  
-- 🧩 **Sections** — About, Projects, Links, and Contact  
+- 🧩 **Sections** — About, FPGA and hardware projects, Links, and Contact  
+- 📚 **Engineering Library** — shareable FPGA references with browser-local saved resources at `/library`  
 - 💡 **Smooth Scrolling Navigation**  
 - 📱 **Fully Responsive Design**  
 - ☁️ **Deployed via Vercel (free hosting)**  
@@ -31,6 +32,8 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 - [Lucide React Icons](https://lucide.dev/)
 - Deployed on [Vercel](https://vercel.com/)
 
+The Engineering Library is a curated set of public references. Saved items are stored only in the current browser and are not synced between devices.
+
 ---
 
 ## 🗂️ Project Structure
@@ -38,7 +41,8 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 landing-page-website/
 ├─ src/
 │  ├─ app/
-│  │  └─ page.tsx               # Main landing page
+│  │  ├─ page.tsx               # Main landing page
+│  │  └─ library/page.tsx       # Shareable reference library
 │  └─ styles/                   # Global styles
 ├─ public/                      # Static assets (icons, images)
 ├─ package.json                 # Dependencies and scripts

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ahmad Bilal Irfan - Software Engineer",
-  description: "Portfolio website of Ahmad Bilal Irfan, a passionate software engineer specializing in web development and cloud computing.",
+  title: "Ahmad Bilal Irfan | FPGA & Hardware Engineer",
+  description: "FPGA, ASIC, and embedded systems portfolio featuring RTL projects, high-speed interface design focus areas, and an engineering resource library.",
 };
 
 export default function RootLayout({
