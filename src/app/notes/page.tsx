@@ -94,12 +94,13 @@ export default function NotesPage() {
   async function shareNote(note: LabNote) {
     try {
       const text = `${note.title}\n\n${note.body}`;
-      if (navigator.share) {
+      const canShare = "share" in navigator;
+      if (canShare) {
         await navigator.share({ title: note.title, text });
       } else {
         await navigator.clipboard.writeText(text);
       }
-      setStatus(navigator.share ? "Note shared." : "Note copied to clipboard.");
+      setStatus(canShare ? "Note shared." : "Note copied to clipboard.");
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") {
         setStatus("Sharing cancelled.");
