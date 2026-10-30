@@ -38,7 +38,7 @@ function ToolCard({ children, icon, title, description }: { children: ReactNode;
   );
 }
 
-function NumberField({ label, value, onChange, min, step = "any", suffix }: {
+function NumberField({ label, value, onChange, min, max, step = "any", suffix }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
