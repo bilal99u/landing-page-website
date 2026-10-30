@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, BookOpen, Plus, Search, Share2, Trash2 } from "lucide-react";
+import { ArrowUpRight, BookOpen, Plus, Search, Share2, Trash2 } from "lucide-react";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 
 type LabNote = {
   id: string;
@@ -110,12 +111,7 @@ export default function NotesPage() {
 
   return (
     <main className="notes-theme min-h-screen px-5 pb-20 text-slate-100">
-      <header className="mx-auto flex max-w-6xl items-center justify-between border-b border-slate-800 py-4">
-        <Link href="/" className="font-semibold tracking-tight text-slate-100">Ahmad Bilal Irfan</Link>
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-cyan-300">
-          <ArrowLeft size={16} /> Portfolio
-        </Link>
-      </header>
+      <SiteHeader />
 
       <div className="mx-auto max-w-6xl pt-14 sm:pt-20">
         <section className="max-w-3xl">
@@ -208,6 +204,7 @@ export default function NotesPage() {
         </div>
         <p role="status" aria-live="polite" className="mt-4 min-h-5 text-sm text-slate-400">{status}</p>
       </div>
+      <SiteFooter />
     </main>
   );
 }

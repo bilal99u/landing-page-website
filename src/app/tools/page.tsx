@@ -3,7 +3,8 @@
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Binary, CircuitBoard, Clock3, Gauge } from "lucide-react";
+import { ArrowUpRight, Binary, CircuitBoard, Clock3, Gauge } from "lucide-react";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 
 const PCIE_GENERATIONS = [
   { name: "Gen 1", rate: 2.5, efficiency: 0.8 },
@@ -99,12 +100,7 @@ export default function ToolsPage() {
 
   return (
     <main className="tools-theme min-h-screen px-5 pb-20 text-slate-100">
-      <header className="mx-auto flex max-w-6xl items-center justify-between border-b border-slate-800 py-4">
-        <Link href="/" className="font-semibold tracking-tight text-slate-100">Ahmad Bilal Irfan</Link>
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-cyan-300">
-          <ArrowLeft size={16} /> Portfolio
-        </Link>
-      </header>
+      <SiteHeader />
 
       <div className="mx-auto max-w-6xl pt-14 sm:pt-20">
         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">Workbench / 001</p>
@@ -212,6 +208,7 @@ export default function ToolsPage() {
           </section>
         </div>
       </div>
+      <SiteFooter />
     </main>
   );
 }

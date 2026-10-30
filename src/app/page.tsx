@@ -191,16 +191,17 @@ export default function Portfolio() {
     <div className="portfolio-theme min-h-screen bg-gray-50 text-gray-900">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white shadow-sm z-50">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-6">
           <Link href="/" className="text-lg font-semibold">Ahmad Bilal Irfan</Link>
-          <div className="flex items-center gap-3 whitespace-nowrap text-sm font-medium sm:gap-6">
-            <a href="#about" className={`hidden sm:inline ${active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>About</a>
+          <div className="flex min-w-0 items-center gap-3 overflow-x-auto whitespace-nowrap text-sm font-medium sm:gap-5">
+            <a href="#about" className={`${active === 'about' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>About</a>
+            <a href="#experience" className="hover:text-blue-600 transition-colors">Experience</a>
             <a href="#projects" className={active === 'projects' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}>Projects</a>
+            <Link href="/projects" className="hover:text-blue-600 transition-colors">All work</Link>
             <Link href="/library" className="hover:text-blue-600 transition-colors">Library</Link>
             <Link href="/tools" className="hover:text-blue-600 transition-colors">Tools</Link>
-            <Link href="/notes" className="hidden sm:inline hover:text-blue-600 transition-colors">Notes</Link>
-            <a href="#links" className={`hidden sm:inline ${active === 'links' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600 transition-colors'}`}>Links</a>
-            <a href="#contact" className="hidden md:inline hover:text-blue-600 transition-colors">Contact</a>
+            <Link href="/notes" className="hover:text-blue-600 transition-colors">Notes</Link>
+            <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
           </div>
         </div>
         <div className="h-0.5 bg-blue-100 w-full"></div>
@@ -247,6 +248,15 @@ export default function Portfolio() {
         </div>
       </section>
 
+      <section aria-label="Portfolio highlights" className="border-b border-slate-800 bg-slate-950 px-5 py-7">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 sm:grid-cols-4">
+          <div><p className="text-2xl font-semibold text-cyan-300">2048-bit</p><p className="mt-1 text-xs text-slate-400 sm:text-sm">Adder architecture</p></div>
+          <div><p className="text-2xl font-semibold text-cyan-300">825 MHz</p><p className="mt-1 text-xs text-slate-400 sm:text-sm">Reported FPGA result</p></div>
+          <div><p className="text-2xl font-semibold text-cyan-300">72</p><p className="mt-1 text-xs text-slate-400 sm:text-sm">Architecture configurations</p></div>
+          <div><p className="text-2xl font-semibold text-cyan-300">3.8 / 4.0</p><p className="mt-1 text-xs text-slate-400 sm:text-sm">Graduate GPA</p></div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="about" className="max-w-4xl mx-auto px-4 py-24 scroll-mt-24">
         <h3 className="text-2xl font-semibold mb-4">About</h3>
@@ -266,6 +276,57 @@ export default function Portfolio() {
           QuestaSim, Xilinx Vivado, and Intel Quartus. I am especially interested in FPGA architecture, high-speed
           transceiver-based interfaces, hardware verification, and embedded systems.
         </p>
+      </section>
+
+      <section id="experience" className="scroll-mt-24 border-y border-slate-800 bg-slate-950/70 px-5 py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">Experience & education</p>
+              <h3 className="mt-3 text-3xl font-semibold text-slate-100">Hardware built with a research mindset.</h3>
+            </div>
+            <Link href="/experience" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition hover:text-cyan-200">Full experience <ArrowRight size={16} /></Link>
+          </div>
+          <div className="mt-9 grid gap-4 md:grid-cols-3">
+            <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-cyan-300">Graduate study</p>
+              <h4 className="mt-3 font-semibold text-slate-100">University of Waterloo</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-400">MEng in Electrical and Computer Engineering, focused on RTL, FPGA/ASIC, and embedded hardware.</p>
+            </article>
+            <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-cyan-300">Research</p>
+              <h4 className="mt-3 font-semibold text-slate-100">Safety-Critical Real-Time Systems Lab</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-400">Research Assistant designing and verifying RTL CAN-Bus modules on FPGA.</p>
+            </article>
+            <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-cyan-300">Industry</p>
+              <h4 className="mt-3 font-semibold text-slate-100">ASIC design & verification</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-400">Contributed to a custom solar-tracking IC through simulation-driven RTL refinement.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="expertise" className="scroll-mt-24 max-w-5xl mx-auto px-4 py-20">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">Areas of expertise</p>
+        <h3 className="mt-3 text-3xl font-semibold">From first principles to verified RTL.</h3>
+        <p className="mt-4 max-w-2xl leading-7 text-slate-400">A cross-disciplinary toolkit for designing, testing, and improving real-time digital systems.</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { title: 'RTL & architecture', items: 'SystemVerilog · Verilog · RISC-V · FPGA/ASIC' },
+            { title: 'Verification', items: 'UVM · SVA · constrained-random · functional coverage' },
+            { title: 'High-speed systems', items: 'PCIe · transceivers · clocking · link bring-up' },
+            { title: 'Engineering tools', items: 'QuestaSim · Quartus · Vivado · Python · C/C++' },
+          ].map((area) => (
+            <article key={area.title} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+              <h4 className="font-semibold text-slate-100">{area.title}</h4>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{area.items}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-6">
+          <Link href="/about" className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition hover:text-cyan-200">More about my approach <ArrowRight size={16} /></Link>
+        </div>
       </section>
 
       {/* Projects Section */}
@@ -377,6 +438,26 @@ export default function Portfolio() {
         </div>
       </section>
 
+      <section id="approach" className="scroll-mt-24 border-y border-slate-800 bg-slate-950/70 px-5 py-20">
+        <div className="mx-auto max-w-5xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">My engineering loop</p>
+          <h3 className="mt-3 text-3xl font-semibold">Make progress observable.</h3>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {[
+              { number: '01', title: 'Understand the constraints', text: 'Start with the timing, interface, and system requirements that shape the design.' },
+              { number: '02', title: 'Build for verification', text: 'Keep behavior explicit and create tests that exercise important paths and edge cases.' },
+              { number: '03', title: 'Measure and refine', text: 'Use simulation, timing analysis, and hardware results to guide the next iteration.' },
+            ].map((step) => (
+              <article key={step.number} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+                <p className="font-mono text-sm text-cyan-300">{step.number}</p>
+                <h4 className="mt-4 text-lg font-semibold text-slate-100">{step.title}</h4>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Links Section */}
       <section id="links" className="max-w-4xl mx-auto px-4 py-24 text-center scroll-mt-24">
         <h3 className="text-2xl font-semibold mb-8">Links</h3>
@@ -385,6 +466,23 @@ export default function Portfolio() {
           <a href="https://github.com/bilal99u" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Github size={28} /></a>
           <a href="https://www.linkedin.com/in/ahmad-bilal-irfan-2324b7149/" target="_blank" rel="noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors"><Linkedin size={28} /></a>
           <a href="mailto:abirfan@uwaterloo.ca" className="text-gray-700 hover:text-blue-600 transition-colors"><Mail size={28} /></a>
+        </div>
+      </section>
+
+      <section id="faq" className="scroll-mt-24 max-w-4xl mx-auto px-5 py-20">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">Quick answers</p>
+        <h3 className="mt-3 text-3xl font-semibold">A few things people ask.</h3>
+        <div className="mt-7 space-y-3">
+          {[
+            { question: 'What kind of engineering work do you focus on?', answer: 'My primary interests are FPGA and ASIC design, RTL verification, processor architecture, high-speed interfaces, and embedded systems.' },
+            { question: 'Are the high-speed interface projects completed implementations?', answer: 'The Serial Lite III and PCI Express entries are identified as design focus areas. The project page distinguishes these from completed projects.' },
+            { question: 'Where can I find practical FPGA references and utilities?', answer: 'The Engineering Library collects shareable public references, while the FPGA Tools page includes bandwidth, timing, and number-conversion helpers.' },
+          ].map((item) => (
+            <details key={item.question} className="group rounded-xl border border-slate-800 bg-slate-900/50 px-5 py-4">
+              <summary className="cursor-pointer list-none font-medium text-slate-200 marker:hidden">{item.question}</summary>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">{item.answer}</p>
+            </details>
+          ))}
         </div>
       </section>
 
@@ -401,6 +499,9 @@ export default function Portfolio() {
           >
             Get in Touch
           </motion.a>
+          <Link href="/contact" className="ml-4 inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline">
+            More ways to connect <ArrowRight size={15} />
+          </Link>
         </div>
       </section>
 

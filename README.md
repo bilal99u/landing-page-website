@@ -9,7 +9,8 @@ Built with a focus on simplicity, performance, and smooth user experience — de
 
 - ⚡ **Next.js 15 + TailwindCSS** — lightweight, responsive, and production-ready  
 - 🧠 **Framer Motion Animations** — subtle transitions and hover effects  
-- 🧩 **Sections** — About, FPGA and hardware projects, Links, and Contact  
+- 🧩 **Portfolio** — expanded landing page with experience, technical expertise, project highlights, engineering approach, FAQs, and contact
+- 📄 **Dedicated pages** — About, Experience, Projects, and Contact, alongside the portfolio homepage
 - 📚 **Engineering Library** — shareable FPGA references with browser-local saved resources at `/library`  
 - 🧰 **FPGA Tools** — PCIe bandwidth, timing-budget, and hex/binary calculators at `/tools`
 - 📝 **Lab Notes** — a searchable, browser-local engineering notebook at `/notes`
@@ -44,9 +45,15 @@ landing-page-website/
 ├─ src/
 │  ├─ app/
 │  │  ├─ page.tsx               # Main landing page
+│  │  ├─ about/page.tsx         # Engineering profile and skills
+│  │  ├─ contact/page.tsx       # Contact channels
+│  │  ├─ experience/page.tsx    # Education and experience
 │  │  ├─ library/page.tsx       # Shareable reference library
-│  │  ├─ tools/page.tsx         # FPGA calculators
-│  │  └─ notes/page.tsx         # Local lab notebook
+│  │  ├─ notes/page.tsx         # Local lab notebook
+│  │  ├─ projects/page.tsx      # Selected project catalog
+│  │  └─ tools/page.tsx         # FPGA calculators
+│  └─ components/
+│     └─ SiteChrome.tsx         # Shared navigation and footer
 │  └─ styles/                   # Global styles
 ├─ public/                      # Static assets (icons, images)
 ├─ package.json                 # Dependencies and scripts
